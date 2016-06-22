@@ -50,7 +50,7 @@ def heal_headers(headers):
     headers['User-Agent'] = fixed_ua
 
 
-def get_account_id(use_ua=False):
+def get_account_id(request, use_ua=False):
     # if use_ua = True, try ua_google_analytics_id
     # if use_ua = False, try ga_google_analytics_id
     # fallback to google_analytics_id
@@ -59,7 +59,14 @@ def get_account_id(use_ua=False):
         if use_ua:
             account_id = settings.GOOGLE_ANALYTICS.get('ua_google_analytics_id',
                                                        default)
+        
+            # Allow middleware to supply optional account ID override:
+            request_key = settings.GOOGLE_ANALYTICS.get('request_key', None)
+            if request_key:
+                account_id = getattr(request, request_key, account_id)
+
             return 'UA%s' % account_id[2:]
+
         account_id = settings.GOOGLE_ANALYTICS.get('ga_google_analytics_id',
                                                    default)
         return 'MO%s' % account_id[2:]
@@ -153,7 +160,7 @@ def build_params(request, path=None, event=None, referer=None):
 
 
 def build_ga_params(request, path=None, event=None, referer=None):
-    account = get_account_id()
+    account = get_account_id(request, use_ua=False)
     generic_data = get_generic_request_data(request, account,
                                             GA_COOKIE_NAME,
                                             path=path, referer=referer)
@@ -212,7 +219,7 @@ def build_ga_params(request, path=None, event=None, referer=None):
 
 
 def build_ua_params(request, path=None, event=None, referer=None):
-    account = get_account_id(use_ua=True)
+    account = get_account_id(request, use_ua=True)
     generic_data = get_generic_request_data(request, account,
                                             UA_COOKIE_NAME,
                                             use_uuid=True, path=path,
