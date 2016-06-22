@@ -84,7 +84,7 @@ def google_analytics(parser, token):
     bits = token.split_contents()
     # collect parameters if available
     debug = 'False'
-    use_ua = 'False'
+    use_ua = 'True'
     if len(bits) > 1:
         debug = bits[1]
     if len(bits) > 2:
