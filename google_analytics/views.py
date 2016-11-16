@@ -3,6 +3,7 @@ import re
 import struct
 from sre_constants import error as sre_error
 
+from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
 from google_analytics.utils import (build_params, set_cookie, heal_headers)
@@ -86,4 +87,9 @@ def google_analytics(request):
         event = event.split(',')
     response = HttpResponse('', 'image/gif', 200)
     response.write(GIF_DATA)
-    return google_analytics_request(request, response, event=event)
+
+    # To disable analytics, set GOOGLE_ANALYTICS_IGNORE_PATH=('/',) to match all.
+    if '/' in getattr(settings, 'GOOGLE_ANALYTICS_IGNORE_PATH', ()):
+        return response
+    else:
+        return google_analytics_request(request, response, event=event)

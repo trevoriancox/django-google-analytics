@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 class GoogleAnalyticsMiddleware(object):
     def process_response(self, request, response):
         try:
-            logger.debug('GoogleAnalyticsMiddleware')
+            #logger.debug('GoogleAnalyticsMiddleware')
             if hasattr(settings, 'GOOGLE_ANALYTICS_IGNORE_PATH'):
                 exclude = [p for p in settings.GOOGLE_ANALYTICS_IGNORE_PATH
                            if request.path.startswith(p)]
