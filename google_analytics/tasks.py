@@ -36,6 +36,7 @@ def send_tracking(params, x_forwarded_for=None, timestamp=None):
 
     # send the request
     http = httplib2.Http()
+
     try:
         try:
             resp, content = http.request(
@@ -48,5 +49,5 @@ def send_tracking(params, x_forwarded_for=None, timestamp=None):
                 url, request_method,
                 **request_kwargs
             )
-    except httplib2.HttpLib2Error:
-        raise Exception("Error opening: %s" % url)
+    except httplib2.HttpLib2Error as e:
+        raise Exception("%s | '%s'" % (e, url))
