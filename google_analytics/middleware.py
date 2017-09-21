@@ -35,7 +35,7 @@ class GoogleAnalyticsMiddleware(object):
         except Exception as e:
             # With django-rest-framework we may see:
             #  AttributeError: 'WSGIRequest' object has no attribute 'session'
-            logger.debug('GoogleAnalyticsMiddleware: %s', e)
+            logger.info('GoogleAnalyticsMiddleware: %s', e)
 
         return response
 
