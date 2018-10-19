@@ -2,6 +2,7 @@ import httplib2
 import re
 import struct
 from sre_constants import error as sre_error
+from six.moves import reduce
 
 from django.conf import settings
 from django.http import HttpResponse
@@ -9,14 +10,14 @@ from django.views.decorators.cache import never_cache
 from google_analytics.utils import (build_params, set_cookie, heal_headers)
 
 
-GIF_DATA = reduce(lambda x, y: x + struct.pack('B', y),
+GIF_DATA = reduce(lambda x, y: x + struct.pack(b'B', y),
                   [0x47, 0x49, 0x46, 0x38, 0x39, 0x61,
                    0x01, 0x00, 0x01, 0x00, 0x80, 0x00,
                    0x00, 0x00, 0x00, 0x00, 0xff, 0xff,
                    0xff, 0x21, 0xf9, 0x04, 0x01, 0x00,
                    0x00, 0x00, 0x00, 0x2c, 0x00, 0x00,
                    0x00, 0x00, 0x01, 0x00, 0x01, 0x00,
-                   0x00, 0x02, 0x01, 0x44, 0x00, 0x3b], '')
+                   0x00, 0x02, 0x01, 0x44, 0x00, 0x3b], b'')
 
 
 def get_ip(remote_address):
