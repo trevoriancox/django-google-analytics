@@ -1,6 +1,6 @@
 import re
 from httplib2 import Http
-from urllib import urlencode
+from django.utils.http import urlencode
 
 from django.test import TestCase, Client
 from django.conf import settings
@@ -191,4 +191,3 @@ class UATestCase(BaseTestCase):
         body = Http.request.call_args[1]['body']
         for key, val in custom_data(None).iteritems():
             self.assertIn(urlencode({key: val}), body)
-

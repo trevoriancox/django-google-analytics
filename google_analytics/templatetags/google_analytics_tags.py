@@ -1,4 +1,4 @@
-import urllib
+from django.utils.http import urlencode
 import urlparse
 
 from django import template
@@ -62,7 +62,7 @@ class GoogleAnalyticsNode(template.Node):
         for param in params:
             if param in query:
                 del query[param]
-        query = urllib.urlencode(query)
+        query = urlencode(query)
         new_url = parsed_url._replace(query=query)
         params['p'] = new_url.geturl()
         # append the UA parameter if requested
@@ -74,7 +74,7 @@ class GoogleAnalyticsNode(template.Node):
         # build and return the url
         url = reverse('google-analytics')
         if len(params) > 0:
-            url += '?' + urllib.urlencode(params)
+            url += '?' + urlencode(params)
         return url
 
 
