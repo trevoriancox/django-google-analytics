@@ -1,7 +1,7 @@
 from hashlib import md5
 import random
 import time
-import urllib
+from django.utils.http import urlencode
 import uuid
 from importlib import import_module
 
@@ -203,7 +203,7 @@ def build_ga_params(request, path=None, event=None, referer=None):
 
     # construct the gif hit url
     utm_gif_location = "http://www.google-analytics.com/__utm.gif"
-    utm_url = utm_gif_location + "?" + urllib.urlencode(params)
+    utm_url = utm_gif_location + "?" + urlencode(params)
 
     return {
         'url': utm_url,
@@ -261,7 +261,7 @@ def build_ua_params(request, path=None, event=None, referer=None):
     # add campaign tracking parameters if provided
     params.update(campaign_params)
 
-    body = urllib.urlencode(params)
+    body = urlencode(params)
 
     return {
         'url': "http://www.google-analytics.com/collect",
